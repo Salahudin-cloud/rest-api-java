@@ -1,0 +1,10 @@
+services:
+  rest-api-java:
+    container_name: "rest-api-java"
+    image: postgres:17-alpine3.20
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: asdf
+      POSTGRES_USER: rest-api-java
+      POSTGRES_DB: rest-api-java
