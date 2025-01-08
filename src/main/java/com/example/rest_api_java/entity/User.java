@@ -13,8 +13,12 @@ import java.util.List;
 @AllArgsConstructor
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private String uuid;
+
+    @Column(nullable = false)
+    private String username;
 
     @Column(nullable = false)
     private String password;
