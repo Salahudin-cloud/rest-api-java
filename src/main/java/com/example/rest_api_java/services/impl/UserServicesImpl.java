@@ -14,6 +14,7 @@ import jakarta.validation.Validator;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
@@ -34,15 +35,16 @@ public class UserServicesImpl implements UserServices {
             throw new ConstraintViolationException(constraintViolations);
         }
 
-        if (userRepository.existsById(userRegisterRequest.getUsername())) {
+        if (userRepository.existsByUsername(userRegisterRequest.getUsername())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already registered");
         }
 
         User user = new User();
-        user.setUuid(UUID.randomUUID().toString());
         user.setUsername(userRegisterRequest.getUsername());
         user.setPassword(BCrypt.hashpw(userRegisterRequest.getPassword(), BCrypt.gensalt()));
         user.setName(userRegisterRequest.getName());
+        user.setCreatedAt(new Date());
+        user.setUpdatedAt(null);
 
         userRepository.save(user);
 

@@ -13,8 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 public class Contact {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false)
-    private String uuid;
+    private Long id;
 
     @Column(nullable = false)
     private String username;
@@ -40,7 +41,7 @@ public class Contact {
     private Date updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "user_uuid", referencedColumnName = "uuid", nullable = false)
+    @JoinColumn(name = "user_uuid", referencedColumnName = "id", nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "contact", cascade = CascadeType.ALL, orphanRemoval = true)

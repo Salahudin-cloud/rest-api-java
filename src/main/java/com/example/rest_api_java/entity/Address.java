@@ -12,8 +12,9 @@ import java.util.Date;
 @AllArgsConstructor
 public class Address {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false)
-    private String uuid;
+    private Long id;
 
     @Column(nullable = false)
     private String street;
@@ -39,6 +40,6 @@ public class Address {
     private Date updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "contact_id", referencedColumnName = "uuid", nullable = false)
+    @JoinColumn(name = "contact_id", referencedColumnName = "id", nullable = false)
     private Contact contact;
 }

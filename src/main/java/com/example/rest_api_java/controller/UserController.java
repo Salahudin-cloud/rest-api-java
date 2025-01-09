@@ -26,9 +26,9 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public WebResponse<String> register (@RequestBody UserRegisterRequest request) {
+    public WebResponse<String> register (@RequestBody UserRegisterRequest request)  {
         userServices.register(request);
-        return WebResponse.<String>builder().message("OK").build();
+        return WebResponse.<String>builder().data(null).message("OK").build();
     }
 
 }
