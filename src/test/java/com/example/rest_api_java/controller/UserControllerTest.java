@@ -13,13 +13,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -37,6 +41,7 @@ class UserControllerTest {
     @BeforeEach
     void setUp(){
         userRepository.deleteAll();
+        assertEquals(0, userRepository.count(), "Database not wiped clean");
     }
 
     @Test
@@ -85,6 +90,7 @@ class UserControllerTest {
         });
     }
 
+
     @Test
     void testRegisterWhenUserExist() throws Exception {
         User user = new User();
@@ -114,5 +120,6 @@ class UserControllerTest {
             assertNotNull(response.getMessage());
         });
     }
+
 
 }
