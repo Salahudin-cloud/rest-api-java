@@ -5,6 +5,7 @@ import com.example.rest_api_java.model.UserRegisterRequest;
 import com.example.rest_api_java.repository.UserRepository;
 import com.example.rest_api_java.security.BCrypt;
 import com.example.rest_api_java.services.UserServices;
+import com.example.rest_api_java.services.ValidatorServices;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +25,15 @@ public class UserServicesImpl implements UserServices {
     private UserRepository userRepository;
 
     @Autowired
-    private Validator validator;
+    private ValidatorServices validatorServices;
+
+
 
     @Override
     @Transactional
     public void register(UserRegisterRequest userRegisterRequest) {
-        Set<ConstraintViolation<UserRegisterRequest>> constraintViolations = validator.validate(userRegisterRequest);
 
-        if (!constraintViolations.isEmpty()) {
-            throw new ConstraintViolationException(constraintViolations);
-        }
+        validatorServices.Validate(userRegisterRequest);
 
         if (userRepository.existsByUsername(userRegisterRequest.getUsername())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already registered");

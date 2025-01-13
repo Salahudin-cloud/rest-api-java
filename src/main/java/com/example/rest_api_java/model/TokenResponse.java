@@ -1,20 +1,18 @@
 package com.example.rest_api_java.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class WebResponse <T>{
+public class TokenResponse {
 
-    private String message;
-    private T data;
+    private String token;
+
+    private Long expiredAt;
 
 }

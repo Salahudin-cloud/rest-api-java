@@ -8,3 +8,17 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  output:
+    ansi:
+      enabled: always
+
+logging:
+  level:
+    root: info                # Global default log level
+    com.example.rest_api_java: debug  # Replace 'your.package.name' with the package of your application (e.g., com.example)
+    org.springframework: warn # Suppress most Spring logs
+    org.hibernate: warn       # Suppress Hibernate logs
+    org.apache: warn          # Suppress Tomcat logs
+
+debug: false
+trace: false

@@ -1,20 +1,21 @@
 package com.example.rest_api_java.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class WebResponse <T>{
+public class UserLoginRequest {
 
-    private String message;
-    private T data;
+    @NotBlank
+    private String username;
 
+    @NotBlank
+    private String password;
 }
