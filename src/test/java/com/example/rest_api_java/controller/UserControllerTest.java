@@ -13,13 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -121,5 +120,64 @@ class UserControllerTest {
         });
     }
 
+
+    @Test
+    void getUserUnauthorized() throws Exception {
+        mockMvc.perform(
+                get("/api/v1/users/current")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .header("X-TOKEn-API", "notfound")
+        ).andExpectAll(
+                status().isUnauthorized()
+        ).andDo(result -> {
+            WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new
+                    TypeReference<WebResponse<String>>() {
+                    });
+
+            assertNotNull(response.getMessage());
+        });
+    }
+
+    @Test
+    void getUserUnauthorizedTokenSend() throws Exception {
+        mockMvc.perform(
+                get("/api/v1/users/current")
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andExpectAll(
+                status().isUnauthorized()
+        ).andDo(result -> {
+            WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new
+                    TypeReference<WebResponse<String>>() {
+                    });
+
+            assertNotNull(response.getMessage());
+        });
+    }
+
+    @Test
+    void getUserSuccess() throws Exception {
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword(BCrypt.hashpw("asdf", BCrypt.gensalt()));
+        user.setName("user_test");
+        user.setToken("user_testing");
+        user.setTokenExpiredAt(System.currentTimeMillis() - 10000000);
+        user.setCreatedAt(new Date());
+        userRepository.save(user);
+
+        mockMvc.perform(
+                get("/api/v1/users/current")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .header("X-TOKEn-API", "user_testing")
+        ).andExpectAll(
+                status().isUnauthorized()
+        ).andDo(result -> {
+            WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new
+                    TypeReference<WebResponse<String>>() {
+                    });
+
+            assertNotNull(response.getMessage());
+        });
+    }
 
 }

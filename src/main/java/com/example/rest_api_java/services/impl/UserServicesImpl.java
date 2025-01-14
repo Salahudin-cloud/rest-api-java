@@ -2,6 +2,7 @@ package com.example.rest_api_java.services.impl;
 
 import com.example.rest_api_java.entity.User;
 import com.example.rest_api_java.model.UserRegisterRequest;
+import com.example.rest_api_java.model.UserResponse;
 import com.example.rest_api_java.repository.UserRepository;
 import com.example.rest_api_java.security.BCrypt;
 import com.example.rest_api_java.services.UserServices;
@@ -48,5 +49,13 @@ public class UserServicesImpl implements UserServices {
 
         userRepository.save(user);
 
+    }
+
+    @Override
+    public UserResponse get(User user) {
+        return UserResponse.builder()
+                .username(user.getUsername())
+                .name(user.getName())
+                .build();
     }
 }
